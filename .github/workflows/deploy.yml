@@ -100,7 +100,7 @@ jobs:
           cluster_ = "${{ env.ECS_CLUSTER }}"
           cpu_ = "${{ env.CPU }}"
           memory_ = "${{ env.MEMORY }}"
-          aws_acc_id = "${{ env.AWS_ACCOUNT_ID }}"
+          aws_acc_id = $AWS_ACCOUNT_ID
           exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
           task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
           
@@ -236,7 +236,7 @@ jobs:
           cat <<EOF > ecs_block.py
           from prefect_aws.ecs import ECSTask
           
-          block_ = "$BLOCK"
+          block_ = "${{ env.BLOCK }}"
           ecs = ECSTask.load(block_)
           ecs.image = "${{ steps.build-image.outputs.image }}"
           ecs.save(block_, overwrite=True)
