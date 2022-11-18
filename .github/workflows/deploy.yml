@@ -44,9 +44,11 @@ jobs:
           filters: |
             flows:
               - added|modified: 'prefect/flows/*.py'
+              - added|modified: '.github/*'
             code:
               - added|modified: 'prefect/requirements.txt'
               - added|modified: 'prefect/Dockerfile'
+              - added|modified: '.github/*'
       - name: Generate Markdown Summary
         run: |
           echo Flows: ${{ steps.filter.outputs.flows_files }} >> $GITHUB_STEP_SUMMARY
@@ -93,7 +95,7 @@ jobs:
           
           id_ = "${{ secrets.AWS_ACCESS_KEY_ID }}"
           key_ = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          path_ = "${{ github.event.inputs.s3_path }}"
+          path_ = "${{ env.S3_PATH }}"
           img_ = "${{ env.IMAGE_NAME }}"
           block_ = "${{ env.BLOCK }}"
           cluster_ = "${{ env.ECS_CLUSTER }}"
