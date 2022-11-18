@@ -63,7 +63,7 @@ jobs:
       - name: Python dependencies
         run: |
           pip install prefect==$PREFECT_VERSION
-          pip install .
+          pip install requirements.txt
 
       - name: Prefect Cloud login
         run: |
