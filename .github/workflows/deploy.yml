@@ -175,6 +175,7 @@ jobs:
           IMAGE_TAG: latest #${{ github.sha }}
         run: |
           export IMAGE="$ECR_REGISTRY/$PROJECT:$IMAGE_TAG"
+          pwd
           docker build -t $IMAGE .
           docker push $IMAGE
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
