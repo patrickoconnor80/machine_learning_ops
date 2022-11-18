@@ -7,7 +7,10 @@ print(dir_path)
 arr = os.listdir()
 print(arr)
 
-from libs.healthcheck import healthcheck  # to show how subflows can be packaged and imported
+arr = os.listdir('/home/runner/work/machine_learning_ops/machine_learning_ops/prefect/flows/prefect')
+print(arr)
+
+from prefect.libs.healthcheck import healthcheck  # to show how subflows can be packaged and imported
 
 
 @task
