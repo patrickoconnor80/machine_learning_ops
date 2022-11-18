@@ -88,6 +88,7 @@ jobs:
         id: aws_ecs_ecs_blocks
         run: |
           export AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+          echo $AWS_ACCOUNT_ID
           cat <<EOF > aws_ecs_blocks.py
           from prefect.filesystems import S3
           from prefect_aws.ecs import ECSTask, AwsCredentials
