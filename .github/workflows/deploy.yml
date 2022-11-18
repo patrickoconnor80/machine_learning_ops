@@ -16,6 +16,7 @@ env:
   IMAGE_NAME: hello-world
   CPU: 512
   MEMORY: 1024
+  S3_PATH: prefect-orion/prod
 
 jobs:
   changes:
@@ -99,8 +100,8 @@ jobs:
           cpu_ = "${{ env.CPU }}"
           memory_ = "${{ env.MEMORY }}"
           aws_acc_id = "${{ env.AWS_ACCOUNT_ID }}"
-          exec_role = f"arn:aws:iam::{aws_acc_id}:role/dataflowops_ecs_execution_role"
-          task_role = f"arn:aws:iam::{aws_acc_id}:role/dataflowops_ecs_execution_role"
+          exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
+          task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
           
           aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
           aws_creds.save(block_, overwrite=True)
