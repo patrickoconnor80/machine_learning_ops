@@ -53,7 +53,7 @@ resource "aws_iam_role_policy_attachment" "task_s3" {
 }
 
 resource "aws_ecr_repository" "ecr" {
-  name                 = "ml-ops"
+  name                 = "mlops"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
