@@ -176,7 +176,7 @@ jobs:
         run: |
           export IMAGE="$ECR_REGISTRY/$PROJECT:$IMAGE_TAG"
           pwd
-          docker build -t $IMAGE .
+          docker build -t $IMAGE prefect/.
           docker push $IMAGE
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
