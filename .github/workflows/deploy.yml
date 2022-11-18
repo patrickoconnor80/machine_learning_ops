@@ -22,7 +22,8 @@ jobs:
       prefect_flows_changed: ${{ steps.filter.outputs.flows }}
       code_dependencies_changed: ${{ steps.filter.outputs.code }}
     steps:
-      - shell: bash
+      - name: bash
+        id: test
         env:
           SUPER_SECRET: ${{ secrets.TEST }}
         run: |
