@@ -15,7 +15,7 @@ env:
   IMAGE_NAME: hello-world
   CPU: 512
   MEMORY: 1024
-  S3_PATH: prefect-orion/prod
+  S3_PATH: prefect-orion-storage-8
 
 jobs:
   changes:
