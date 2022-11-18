@@ -93,7 +93,7 @@ jobs:
           id_ = "${{ secrets.AWS_ACCESS_KEY_ID }}"
           key_ = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           path_ = "${{ github.event.inputs.s3_path }}"
-          img_ = "${{ env.IMAGE }}"
+          img_ = "${{ env.IMAGE_NAME }}"
           block_ = "{{ env.BLOCK }}"
           cluster_ = "${{ env.ECS_CLUSTER }}"
           cpu_ = "${{ env.CPU }}"
