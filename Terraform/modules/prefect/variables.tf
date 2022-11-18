@@ -1,9 +1,5 @@
-variable "vpc_id" {
-  type        = string
-  description = "id of the vpc to deploy the prefect agent into"
-}
-
-variable "private_subnet_ids" {
-  type        = list(string)
-  description = "ids of the subnets to assign to the autoscaling group"
-}
+variable "aws_region" {}
+variable "aws_account_id" {}
+variable "image_name" {}
+variable "cpu" {}
+variable "memory" {}

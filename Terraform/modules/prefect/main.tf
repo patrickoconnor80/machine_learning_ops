@@ -1,15 +1,79 @@
-module "prefect" {
-  source  = "aws-ia/agent-ec2/prefect"
-  version = "1.0.2"
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name = "${var.image_name}-TaskExecutionRole"
+ 
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ecs-tasks.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
+}
 
+resource "aws_iam_role" "ecs_task_role" {
+  name = "${var.image_name}-TaskRole"
+ 
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ecs-tasks.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
+}
 
-  deploy_network = false
-  vpc_id         = var.vpc_id
-  subnet_ids     = var.private_subnet_ids
+resource "aws_ecs_cluster" "cluster" {
+  name = "prefect-cluster"
+}
+ 
+resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "task_s3" {
+  role       = "${aws_iam_role.ecs_task_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_ecr_repository" "ecr" {
+  name                 = "ml-ops"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = false
+  }
 
 }
 
-resource "aws_s3_bucket" "prefect" {
-  bucket_prefix = "prefect-block"
-
-}
+resource "aws_ecs_task_definition" "definition" {
+    family                   = "${var.image_name}-TaskDefinition"
+    task_role_arn            = "arn:aws:iam::${var.aws_account_id}:role/${var.image_name}-TaskRole"
+    execution_role_arn       = "arn:aws:iam::${var.aws_account_id}:role/${var.image_name}-TaskExecutionRole"
+    network_mode             = "awsvpc"
+    cpu                      = "${var.cpu}"
+    memory                   = "${var.memory}"
+    requires_compatibilities = ["FARGATE"]
+    container_definitions    = jsonencode([
+        {
+        "image": "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.image_name}:latest",
+        "name": "flow"
+        }
+        ])
+    }

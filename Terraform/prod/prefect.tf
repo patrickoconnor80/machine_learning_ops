@@ -1,7 +1,10 @@
 module "prefect" {
   source = "../modules/prefect"
 
-  vpc_id          = module.network.vpc_id
-  private_subnet_ids = module.network.private_subnet_ids
+  aws_region = "us-east-1"
+  aws_account_id = "948065143262"
+  image_name = "hello-world"
+  cpu = 512
+  memory = 1024
 
 }
