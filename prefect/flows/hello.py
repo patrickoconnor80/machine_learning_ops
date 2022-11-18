@@ -1,6 +1,6 @@
 from prefect import task, flow
 from prefect import get_run_logger
-from flows.healthcheck import healthcheck  # to show how subflows can be packaged and imported
+from prefect.flows.healthcheck import healthcheck  # to show how subflows can be packaged and imported
 
 import os 
 dir_path = os.path.dirname(os.path.realpath(__file__))
