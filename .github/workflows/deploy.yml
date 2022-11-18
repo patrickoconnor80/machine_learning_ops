@@ -48,6 +48,7 @@ jobs:
           echo Code dependency changes: ${{ steps.filter.outputs.code_files }} >> $GITHUB_STEP_SUMMARY
   maintenance:
     runs-on: ubuntu-latest
+    environment: github_action
     needs: changes
     if: ${{ needs.changes.outputs.prefect_flows_changed == 'true' }}
     steps:
@@ -83,6 +84,7 @@ jobs:
 
   deploy:
     needs: [changes, maintenance]
+    environment: github_action
     if: ${{ needs.changes.outputs.prefect_flows_changed == 'true' }}
     runs-on: ubuntu-latest
     strategy:
@@ -131,6 +133,7 @@ jobs:
 
   ecr-ecs-block:
     needs: changes
+    environment: github_action
     if: ${{ needs.changes.outputs.code_dependencies_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
