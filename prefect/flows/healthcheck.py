@@ -5,7 +5,6 @@ from prefect.orion.api.server import ORION_API_VERSION
 import sys
 
 
-
 @task
 def log_platform_info():
     logger = get_run_logger()
