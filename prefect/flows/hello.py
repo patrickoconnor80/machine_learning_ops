@@ -3,6 +3,10 @@ from prefect import get_run_logger
 import os 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 print(dir_path)
+
+arr = os.listdir()
+print(arr)
+
 from libs.healthcheck import healthcheck  # to show how subflows can be packaged and imported
 
 
