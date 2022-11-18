@@ -94,11 +94,11 @@ jobs:
           key_ = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           path_ = "${{ github.event.inputs.s3_path }}"
           img_ = "${{ env.IMAGE_NAME }}"
-          block_ = "{{ env.BLOCK }}"
+          block_ = "${{ env.BLOCK }}"
           cluster_ = "${{ env.ECS_CLUSTER }}"
           cpu_ = "${{ env.CPU }}"
           memory_ = "${{ env.MEMORY }}"
-          aws_acc_id = "{{ env.AWS_ACCOUNT_ID }}"
+          aws_acc_id = "${{ env.AWS_ACCOUNT_ID }}"
           exec_role = f"arn:aws:iam::{aws_acc_id}:role/dataflowops_ecs_execution_role"
           task_role = f"arn:aws:iam::{aws_acc_id}:role/dataflowops_ecs_execution_role"
           
