@@ -62,6 +62,10 @@ resource "aws_ecr_repository" "ecr" {
 
 }
 
+resource "aws_s3_bucket" "dags" {
+  bucket = "prefect-orion-storage-8"
+}
+
 resource "aws_ecs_task_definition" "definition" {
     family                   = "${var.image_name}-TaskDefinition"
     task_role_arn            = "arn:aws:iam::${var.aws_account_id}:role/${var.image_name}-TaskRole"

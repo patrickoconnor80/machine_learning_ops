@@ -12,6 +12,7 @@ def say_hi(user_name: str):
     logger.info("Conection string: %s", conn_str)
 
 
+
 @flow
 def hello(user: str = "Marvin"):
     say_hi(user)
