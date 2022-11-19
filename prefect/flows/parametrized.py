@@ -2,7 +2,6 @@ from prefect import task, flow
 from prefect import get_run_logger
 from typing import Any
 
-
 @task
 def say_hi(user_name: str, question: str, answer: Any) -> None:
     logger = get_run_logger()

@@ -161,7 +161,7 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT -o $FLOW_NAME.yaml -ib ecs-task/$BLOCK --skip-upload --interval 1000
+          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -t $PROJECT -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a  -o $FLOW_NAME.yaml -ib ecs-task/$BLOCK --skip-upload --interval 1000
           echo "flow_manifest=$FLOW_NAME.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact

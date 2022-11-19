@@ -1,16 +1,11 @@
 from prefect import task, flow
 from prefect import get_run_logger
 import os 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-print(dir_path)
 
-arr = os.listdir()
-print(arr)
+print(os.path.dirname(os.path.realpath(__file__)))
+print(os.getcwd())
 
-arr = os.listdir('/home/runner/work/machine_learning_ops/machine_learning_ops/prefect/flows/prefect')
-print(arr)
-
-from prefect.libs.healthcheck import healthcheck  # to show how subflows can be packaged and imported
+#from prefect.libs.healthcheck import healthcheck  # to show how subflows can be packaged and imported
 
 
 @task
@@ -22,7 +17,7 @@ def say_hi(user_name: str):
 @flow
 def hello(user: str = "Marvin"):
     say_hi(user)
-    healthcheck()
+    #healthcheck()
 
 
 if __name__ == "__main__":
