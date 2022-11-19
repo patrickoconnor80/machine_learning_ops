@@ -55,7 +55,8 @@ resource "aws_iam_policy" "prefect_ecs_task" {
         ]
         Resource = [
           "arn:aws:secretsmanager:us-east-1:948065143262:secret:PREFECT_API_KEY-qsOajt",
-          "arn:aws:secretsmanager:us-east-1:948065143262:secret:PREFECT_API_URL-XEPLCZ"
+          "arn:aws:secretsmanager:us-east-1:948065143262:secret:PREFECT_API_URL-XEPLCZ",
+          "arn:aws:secretsmanager:us-east-1:948065143262:secret:PREFECT_PROFILE-aucjiC"
         ]
       }
     ]
