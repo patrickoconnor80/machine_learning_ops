@@ -7,7 +7,6 @@ print(os.getcwd())
 
 #from prefect.libs.healthcheck import healthcheck  # to show how subflows can be packaged and imported
 
-
 @task
 def say_hi(user_name: str):
     logger = get_run_logger()

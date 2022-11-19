@@ -8,7 +8,6 @@ def say_hi(user_name: str, question: str, answer: Any) -> None:
     logger.info("Hello from Prefect, %s! 👋", user_name)
     logger.info("The answer to the %s question is %s! 🤖", question, answer)
 
-
 @flow
 def parametrized(
     user: str = "Marvin", question: str = "Ultimate", answer: Any = 42

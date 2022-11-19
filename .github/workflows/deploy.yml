@@ -89,7 +89,7 @@ jobs:
           key_ = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           path_ = "${{ env.S3_PATH }}"
           # img_ = "${{ env.IMAGE_NAME }}"
-          # block_ = "${{ env.BLOCK }}"
+          block_ = "${{ env.BLOCK }}"
           # cluster_ = "${{ env.ECS_CLUSTER }}"
           # cpu_ = "${{ env.CPU }}"
           # memory_ = "${{ env.MEMORY }}"
