@@ -16,7 +16,6 @@ def log_platform_info():
     logger.info("Prefect API Version = %s", ORION_API_VERSION)
 
 
-
 @flow
 def healthcheck():
     log_platform_info()

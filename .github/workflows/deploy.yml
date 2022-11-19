@@ -98,7 +98,6 @@ jobs:
           task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
           
           aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
-          print(aws_creds)
           aws_creds.save(block_, overwrite=True)
           
           s3 = S3(bucket_path=path_, aws_access_key_id=id_, aws_secret_access_key=key_)
@@ -162,8 +161,7 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT -o $FLOW_NAME.yaml -ib ecs-task/$BLOCK --skip-upload
-          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT-local --skip-upload
+          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT -o $FLOW_NAME.yaml -ib ecs-task/$BLOCK --skip-upload --interval 1000
           echo "flow_manifest=$FLOW_NAME.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact

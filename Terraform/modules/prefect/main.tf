@@ -128,7 +128,7 @@ resource "aws_ecs_task_definition" "prefect" {
           essential = true
           cpu = "${var.cpu}"
           entryPoint = ["bash", "-c"],
-          command = ["prefect", "--version;prefect", "config", "view;prefect", "agent", "start", "-q", "mlops"]
+          command = ["prefect --version;prefect config view;prefect agent start -q mlops"]
           secrets = [
             {
               name : "PREFECT_API_KEY"
@@ -137,6 +137,10 @@ resource "aws_ecs_task_definition" "prefect" {
             {
               name : "PREFECT_API_URL"
               valueFrom : "arn:aws:secretsmanager:us-east-1:948065143262:secret:PREFECT_API_URL-XEPLCZ"
+            },
+            {
+              name : "PREFECT_PROFILE"
+              valueFrom : "arn:aws:secretsmanager:us-east-1:948065143262:secret:PREFECT_PROFILE-aucjiC"
             }
           ],
           environment = [
