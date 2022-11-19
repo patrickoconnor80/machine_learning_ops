@@ -215,9 +215,11 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          export IMAGE="$ECR_REGISTRY/$PROJECT:$IMAGE_TAG"
+          export IMAGE="$ECR_REGISTRY/$PROJECT:latest"
           docker build -t $IMAGE prefect/.
+          docker tag $IMAGE "$ECR_REGISTRY/$PROJECT:$IMAGE_TAG"
           docker push $IMAGE
+          docker push $ECR_REGISTRY/$PROJECT:$IMAGE_TAG
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
       - name: Flow deployments finished

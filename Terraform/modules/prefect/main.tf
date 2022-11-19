@@ -128,7 +128,7 @@ resource "aws_ecs_task_definition" "prefect" {
           essential = true
           cpu = "${var.cpu}"
           entryPoint = ["bash", "-c"],
-          command = ["prefect", "agent", "start", "-q", "mlops"]
+          command = ["prefect", "--version;prefect", "config", "view;prefect", "agent", "start", "-q", "mlops"]
           secrets = [
             {
               name : "PREFECT_API_KEY"
