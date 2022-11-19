@@ -4,5 +4,6 @@ WORKDIR /opt/prefect
 COPY requirements.txt .
 COPY libs/ /opt/prefect/libs/
 COPY flows/ /opt/prefect/flows/
+RUN pip install prefect==2.4
 RUN pip install -r requirements.txt
 RUN prefect block register -m prefect_aws.ecs

@@ -213,10 +213,9 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: latest #${{ github.sha }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           export IMAGE="$ECR_REGISTRY/$PROJECT:$IMAGE_TAG"
-          pwd
           docker build -t $IMAGE prefect/.
           docker push $IMAGE
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
