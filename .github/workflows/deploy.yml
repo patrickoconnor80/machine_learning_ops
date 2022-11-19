@@ -83,38 +83,38 @@ jobs:
           echo $AWS_ACCOUNT_ID
           cat <<EOF > aws_ecs_blocks.py
           from prefect.filesystems import S3
-          from prefect_aws.ecs import ECSTask, AwsCredentials
+          # from prefect_aws.ecs import ECSTask, AwsCredentials
           
           id_ = "${{ secrets.AWS_ACCESS_KEY_ID }}"
           key_ = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           path_ = "${{ env.S3_PATH }}"
-          img_ = "${{ env.IMAGE_NAME }}"
-          block_ = "${{ env.BLOCK }}"
-          cluster_ = "${{ env.ECS_CLUSTER }}"
-          cpu_ = "${{ env.CPU }}"
-          memory_ = "${{ env.MEMORY }}"
-          aws_acc_id = $AWS_ACCOUNT_ID
-          exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
-          task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
+          # img_ = "${{ env.IMAGE_NAME }}"
+          # block_ = "${{ env.BLOCK }}"
+          # cluster_ = "${{ env.ECS_CLUSTER }}"
+          # cpu_ = "${{ env.CPU }}"
+          # memory_ = "${{ env.MEMORY }}"
+          # aws_acc_id = $AWS_ACCOUNT_ID
+          # exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
+          # task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
           
-          aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
-          aws_creds.save(block_, overwrite=True)
+          # aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
+          # aws_creds.save(block_, overwrite=True)
           
           s3 = S3(bucket_path=path_, aws_access_key_id=id_, aws_secret_access_key=key_)
           s3.save(block_, overwrite=True)
           
-          ecs = ECSTask(
-              aws_credentials=aws_creds,
-              image=img_,
-              cpu=cpu_,
-              memory=memory_,
-              stream_output=True,
-              configure_cloudwatch_logs=True,
-              cluster=cluster_,
-              execution_role_arn=exec_role,
-              task_role_arn=task_role,
-          )
-          ecs.save(block_, overwrite=True)
+          # ecs = ECSTask(
+          #     aws_credentials=aws_creds,
+          #     image=img_,
+          #     cpu=cpu_,
+          #     memory=memory_,
+          #     stream_output=True,
+          #     configure_cloudwatch_logs=True,
+          #     cluster=cluster_,
+          #     execution_role_arn=exec_role,
+          #     task_role_arn=task_role,
+          # )
+          # ecs.save(block_, overwrite=True)
           EOF
           python aws_ecs_blocks.py
 
@@ -161,7 +161,7 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -t $PROJECT -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -o $FLOW_NAME.yaml -ib ecs-task/$BLOCK --skip-upload --interval 1000
+          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name ${{ env.PROJECT }} -q ${{ env.PROJECT }} -a -sb s3/${{ env.BLOCK}} -v $GITHUB_SHA -o $FLOW_NAME.yaml --interval 300
           echo "flow_manifest=$FLOW_NAME.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact
