@@ -120,7 +120,7 @@ jobs:
 
       - name: Upload to S3 - maintenance flow
         id: maintenance
-        run: prefect deployment build prefect/utilities/maintenance.py:maintenance -n $PROJECT -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t maintenance --interval 10
+        run: prefect deployment build prefect/utilities/maintenance.py:maintenance -n $PROJECT -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t maintenance --interval 30
 
   deploy:
     needs: [changes, maintenance]
@@ -223,15 +223,18 @@ jobs:
       - name: Flow deployments finished
         run: echo "ECR image $ECR_REGISTRY/$PROJECT:$IMAGE_TAG built at $(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_STEP_SUMMARY
 
-      - name: Prefect ECS block
-        run: |
-          cat <<EOF > ecs_block.py
-          from prefect_aws.ecs import ECSTask
+      - name:
+        run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service prefect-ecs-service --force-new-deployment
+
+      # - name: Prefect ECS block
+      #   run: |
+      #     cat <<EOF > ecs_block.py
+      #     from prefect_aws.ecs import ECSTask
           
-          block_ = "${{ env.BLOCK }}"
-          ecs = ECSTask.load(block_)
-          ecs.image = "${{ steps.build-image.outputs.image }}"
-          ecs.save(block_, overwrite=True)
+      #     block_ = "${{ env.BLOCK }}"
+      #     ecs = ECSTask.load(block_)
+      #     ecs.image = "${{ steps.build-image.outputs.image }}"
+      #     ecs.save(block_, overwrite=True)
           
-          EOF
-          python ecs_block.py
+      #     EOF
+      #     python ecs_block.py
