@@ -1,5 +1,4 @@
 import sys
-
 sys.path.insert(1, '/home/runner/work/machine_learning_ops/machine_learning_ops/prefect/flows')
 
 from prefect.deployments import Deployment
@@ -8,7 +7,7 @@ from prefect.orion.schemas.schedules import CronSchedule
 from healthcheck import healthcheck
 
 
-version = sys.argv[0]
+version = sys.argv[1]
 
 storage = Block.load("s3/prod")
 

@@ -164,9 +164,9 @@ jobs:
         run: |
           echo ${{ matrix.flows }}
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          echo FLOW_NAME
+          echo $FLOW_NAME
           DEPLOYMENT_NAME="prefect/deployments/${FLOW_NAME}_deployment.py"
-          echo DEPLOYMENT_NAME
+          echo $DEPLOYMENT_NAME
           python $DEPLOYMENT_NAME $GITHUB_SHA
           echo "flow_manifest=$FLOW_NAME.yaml" >> $GITHUB_OUTPUT
 

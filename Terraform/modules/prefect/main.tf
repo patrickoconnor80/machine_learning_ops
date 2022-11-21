@@ -128,6 +128,7 @@ resource "aws_ecs_task_definition" "prefect" {
           name = "flow"
           essential = true
           cpu = "${var.cpu}"
+          memory = "${var.memory}"
           entryPoint = ["bash", "-c"],
           command = ["prefect --version;prefect config view;prefect agent start -q mlops"]
           secrets = [
