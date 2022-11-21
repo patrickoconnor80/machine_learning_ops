@@ -158,6 +158,7 @@ jobs:
         run: |
           echo ${{ matrix.flows }}
           export PYTHONPATH="${PYTHONPATH}:/home/runner/work/machine_learning_ops/machine_learning_ops/"
+          echo $PYTHONPATH
           pwd
           python -c "import sys; print('\n'.join(sys.path))"
           python ${{ matrix.flows }} $GITHUB_SHA
