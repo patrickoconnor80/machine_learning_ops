@@ -26,6 +26,11 @@ ipython_config.py
 env/
 venv/
 
+#Github
+.git/
+.github/
+.gitignore
+
 # MacOS
 .DS_Store
 
