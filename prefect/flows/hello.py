@@ -1,6 +1,9 @@
 from prefect import task, flow
 from prefect import get_run_logger
 import os 
+from prefect.deployments import Deployment
+from prefect.blocks.core import Block
+from prefect.orion.schemas.schedules import CronSchedule
 
 print(os.path.dirname(os.path.realpath(__file__)))
 print(os.getcwd())
@@ -19,5 +22,15 @@ def hello(user: str = "Marvin"):
     #healthcheck()
 
 
+storage = Block.load("s3/prod")
+
+deployment = Deployment.build_from_flow(
+    flow=hello,
+    name="hello-deployment",
+    work_queue_name="mlops",
+    storage=storage,
+    schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York"))
+)
+
 if __name__ == "__main__":
-    hello(user="Anna")
+    deployment.apply()
