@@ -26,8 +26,8 @@ def healthcheck():
     log_platform_info()
 
 deployment = Deployment.build_from_flow(
-    flow=maintenance,
-    name="maintenance-deployment",
+    flow=healthcheck,
+    name="healthcheck-deployment",
     version=version,
     work_queue_name="mlops",
     storage=storage,
