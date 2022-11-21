@@ -34,6 +34,6 @@ deployment = Deployment.build_from_flow(
 
 if __name__ == "__main__":
     deployment.apply()
-    
 
-from prefect.libs.snowflake_client import SnowflakeClient
+
+from libs.snowflake_client import SnowflakeClient
