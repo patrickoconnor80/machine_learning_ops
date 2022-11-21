@@ -9,8 +9,6 @@ from prefect.orion.schemas.schedules import CronSchedule
 
 from libs.snowflake_client import SnowflakeClient
 
-print(os.getcwd())
-
 storage = Block.load("s3/prod")
 version = sys.argv[1]
 
