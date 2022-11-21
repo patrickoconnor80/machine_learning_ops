@@ -2,9 +2,6 @@ import platform
 import prefect
 from prefect import task, flow, get_run_logger
 from prefect.orion.api.server import ORION_API_VERSION
-import sys
-from log_flow import log_flow
-from prefect.deployments import Deployment
 
 @task
 def log_platform_info():
