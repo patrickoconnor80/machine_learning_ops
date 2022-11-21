@@ -118,10 +118,6 @@ jobs:
           EOF
           python aws_ecs_blocks.py
 
-      - name: Upload to S3 - maintenance flow
-        id: maintenance
-        run: prefect deployment build prefect/utilities/maintenance.py:maintenance -n $PROJECT -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t maintenance --interval 30
-
   deploy:
     needs: [changes, maintenance]
     environment: github_action

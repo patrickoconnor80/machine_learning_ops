@@ -25,6 +25,7 @@ def log_platform_info():
 def healthcheck():
     log_platform_info()
 
+
 deployment = Deployment.build_from_flow(
     flow=healthcheck,
     name="healthcheck-deployment",
