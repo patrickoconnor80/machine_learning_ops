@@ -7,7 +7,6 @@ from prefect.deployments import Deployment
 from prefect.blocks.core import Block
 from prefect.orion.schemas.schedules import CronSchedule
 
-print(os.path.dirname(os.path.realpath(__file__)))
 print(os.getcwd())
 
 storage = Block.load("s3/prod")
