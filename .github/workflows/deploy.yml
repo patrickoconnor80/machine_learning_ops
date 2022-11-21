@@ -157,7 +157,7 @@ jobs:
         id: build
         run: |
           echo ${{ matrix.flows }}
-          export PYTHONPATH="/home/runner/work/machine_learning_ops/machine_learning_ops/"
+          export PYTHONPATH=`pwd`
           echo $PYTHONPATH
           pwd
           python -c "import sys; print('\n'.join(sys.path))"
