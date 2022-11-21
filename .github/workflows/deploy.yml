@@ -46,15 +46,11 @@ jobs:
         run: |
           echo Flows: ${{ steps.filter.outputs.flows_files }} >> $GITHUB_STEP_SUMMARY
           echo Code dependency changes: ${{ steps.filter.outputs.code_files }} >> $GITHUB_STEP_SUMMARY
-
-  deploy:
-    needs: [changes]
-    environment: github_action
-    if: ${{ needs.changes.outputs.prefect_flows_changed == 'true' }}
+  maintenance:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        flows: ${{ fromJson(needs.changes.outputs.prefect_flows) }}
+    environment: github_action
+    needs: changes
+    if: ${{ needs.changes.outputs.prefect_flows_changed == 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -127,6 +123,41 @@ jobs:
       - name: Upload to S3 - maintenance flow
         id: maintenance
         run: prefect deployment build prefect/utilities/maintenance.py:maintenance -n $PROJECT -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t maintenance --interval 30
+
+  deploy:
+    needs: [changes, maintenance]
+    environment: github_action
+    if: ${{ needs.changes.outputs.prefect_flows_changed == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flows: ${{ fromJson(needs.changes.outputs.prefect_flows) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Python dependencies
+        run: |
+          pip install prefect==$PREFECT_VERSION
+          pip install -r prefect/requirements.txt
+
+      - name: Prefect Cloud login
+        run: |
+          prefect config set PREFECT_API_KEY=${{ secrets.PREFECT_API_KEY }} 
+          prefect config set PREFECT_API_URL=${{ secrets.PREFECT_API_URL }}
+
+      - name: AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          mask-aws-account-id: 'no'
 
       - name: Deploy flows to S3
         id: build
