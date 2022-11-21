@@ -1,3 +1,5 @@
+import sys
+
 import platform
 import prefect
 from prefect import task, flow, get_run_logger
@@ -5,6 +7,9 @@ from prefect.orion.api.server import ORION_API_VERSION
 from prefect.deployments import Deployment
 from prefect.blocks.core import Block
 from prefect.orion.schemas.schedules import CronSchedule
+
+storage = Block.load("s3/prod")
+version = sys.argv[1]
 
 @task
 def log_platform_info():
@@ -20,11 +25,10 @@ def log_platform_info():
 def healthcheck():
     log_platform_info()
 
-storage = Block.load("s3/prod")
-
 deployment = Deployment.build_from_flow(
     flow=maintenance,
     name="maintenance-deployment",
+    version=version,
     work_queue_name="mlops",
     storage=storage,
     schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York"))

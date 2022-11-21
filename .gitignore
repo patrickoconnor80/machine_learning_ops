@@ -340,4 +340,7 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+# Ignore CLI configuration files
+*.hcl
+
 # End of https://www.toptal.com/developers/gitignore/api/git,macos,terraform,python,dbt,phpstorm+all

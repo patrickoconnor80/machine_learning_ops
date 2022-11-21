@@ -1,12 +1,17 @@
+import sys
+import os 
+
 from prefect import task, flow
 from prefect import get_run_logger
-import os 
 from prefect.deployments import Deployment
 from prefect.blocks.core import Block
 from prefect.orion.schemas.schedules import CronSchedule
 
 print(os.path.dirname(os.path.realpath(__file__)))
 print(os.getcwd())
+
+storage = Block.load("s3/prod")
+version = sys.argv[1]
 
 #from prefect.libs.healthcheck import healthcheck  # to show how subflows can be packaged and imported
 
@@ -21,12 +26,10 @@ def hello(user: str = "Marvin"):
     say_hi(user)
     #healthcheck()
 
-
-storage = Block.load("s3/prod")
-
 deployment = Deployment.build_from_flow(
     flow=hello,
     name="hello-deployment",
+    version=version,
     work_queue_name="mlops",
     storage=storage,
     schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York"))

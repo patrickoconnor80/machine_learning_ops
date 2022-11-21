@@ -37,8 +37,6 @@ jobs:
           filters: |
             flows:
               - added|modified: 'prefect/flows/*.py'
-            deployments:
-              - added|modified: 'prefect/deployments/*.py'
             code:
               - added|modified: 'prefect/requirements.txt'
               - added|modified: 'prefect/Dockerfile'
@@ -163,11 +161,7 @@ jobs:
         id: build
         run: |
           echo ${{ matrix.flows }}
-          FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          echo $FLOW_NAME
-          DEPLOYMENT_NAME="prefect/deployments/${FLOW_NAME}_deployment.py"
-          echo $DEPLOYMENT_NAME
-          python $DEPLOYMENT_NAME $GITHUB_SHA
+          python ${{ matrix.flows }} $GITHUB_SHA
           echo "flow_manifest=$FLOW_NAME.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact
