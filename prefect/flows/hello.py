@@ -13,8 +13,6 @@ print(os.getcwd())
 storage = Block.load("s3/prod")
 version = sys.argv[1]
 
-#from prefect.libs.healthcheck import healthcheck  # to show how subflows can be packaged and imported
-
 @task
 def say_hi(user_name: str):
     logger = get_run_logger()
@@ -38,3 +36,5 @@ deployment = Deployment.build_from_flow(
 
 if __name__ == "__main__":
     deployment.apply()
+
+from prefect.libs.snowflake_client import SnowflakeClient
