@@ -26,7 +26,3 @@ provider "aws" {
     }
   }
 }
-
-resource "aws_s3_bucket" "terraform" {
-  bucket = "terraform-state-harry-${var.env_name}"
-}
