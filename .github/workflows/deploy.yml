@@ -84,7 +84,7 @@ jobs:
           cat <<EOF > aws_ecs_blocks.py
           from prefect.filesystems import S3
           # from prefect_aws.ecs import ECSTask, AwsCredentials
-          
+
           id_ = "${{ secrets.AWS_ACCESS_KEY_ID }}"
           key_ = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           path_ = "${{ env.S3_PATH }}"
@@ -96,10 +96,10 @@ jobs:
           # aws_acc_id = $AWS_ACCOUNT_ID
           # exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
           # task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
-          
+
           # aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
           # aws_creds.save(block_, overwrite=True)
-          
+
           s3 = S3(bucket_path=path_, aws_access_key_id=id_, aws_secret_access_key=key_)
           s3.save(block_, overwrite=True)
           
@@ -161,7 +161,8 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME --name ${{ env.PROJECT }} -q ${{ env.PROJECT }} -a -sb s3/${{ env.BLOCK}} -v $GITHUB_SHA -o $FLOW_NAME.yaml --interval 300
+          DEPLOYMENT_NAME="${FLOW_NAME}_deployment.py"
+          python DEPLOYMENT_NAME $GITHUB_SHA
           echo "flow_manifest=$FLOW_NAME.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact

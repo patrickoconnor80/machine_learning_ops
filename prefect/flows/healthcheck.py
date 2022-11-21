@@ -20,15 +20,5 @@ def log_platform_info():
 def healthcheck():
     log_platform_info()
 
-deployment = Deployment.build_from_flow(
-    flow=healthcheck,
-    name="log-simple",
-    parameters={"name": "Marvin"},
-    infra_overrides={"env": {"PREFECT_LOGGING_LEVEL": "DEBUG"}},
-    work_queue_name="test",
-    schedule=,
-    storage=
-)
-
 if __name__ == "__main__":
-    deployment.apply()
+    healthcheck()
