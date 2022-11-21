@@ -36,4 +36,4 @@ if __name__ == "__main__":
     deployment.apply()
 
 
-from libs.snowflake_client import SnowflakeClient
+from prefect.libs.snowflake_client import SnowflakeClient
