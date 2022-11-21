@@ -2,15 +2,16 @@ import sys
 from prefect.deployments import Deployment
 from prefect.blocks.core import Block
 from prefect.orion.schemas.schedules import CronSchedule
-from healthcheck import healthcheck
+from parametrized import parametrized
 
+sys.path.insert(1, '/home/runner/work/machine_learning_ops/machine_learning_ops/prefect/flows')
 version = sys.argv[0]
 
 storage = Block.load("s3/prod")
 
 deployment = Deployment.build_from_flow(
-    flow=healthcheck,
-    name="healthcheck-deployment",
+    flow=parametrized,
+    name="parametrized-deployment",
     work_queue_name="mlops",
     version=version,
     storage=storage,
