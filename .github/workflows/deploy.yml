@@ -157,6 +157,8 @@ jobs:
         id: build
         run: |
           echo ${{ matrix.flows }}
+          pwd
+          python -c "import sys; print('\n'.join(sys.path))"
           python ${{ matrix.flows }} $GITHUB_SHA
           echo "flow_manifest=$FLOW_NAME.yaml" >> $GITHUB_OUTPUT
 

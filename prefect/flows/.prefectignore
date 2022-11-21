@@ -36,6 +36,11 @@ dask-worker-space/
 .idea/
 .vscode/
 
+#Github
+.git/
+.github/
+.gitignore
+
 # Created by https://www.toptal.com/developers/gitignore/api/git,macos,terraform,python,dbt,phpstorm+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=git,macos,terraform,python,dbt,phpstorm+all
 
