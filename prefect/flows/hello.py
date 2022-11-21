@@ -7,6 +7,8 @@ from prefect.deployments import Deployment
 from prefect.blocks.core import Block
 from prefect.orion.schemas.schedules import CronSchedule
 
+from libs.snowflake_client import SnowflakeClient
+
 print(os.getcwd())
 
 storage = Block.load("s3/prod")
@@ -34,6 +36,3 @@ deployment = Deployment.build_from_flow(
 
 if __name__ == "__main__":
     deployment.apply()
-
-
-from libs.snowflake_client import SnowflakeClient
