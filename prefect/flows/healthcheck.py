@@ -7,7 +7,9 @@ from prefect.orion.api.server import ORION_API_VERSION
 from prefect.deployments import Deployment
 from prefect.blocks.core import Block
 from prefect.orion.schemas.schedules import CronSchedule
-
+from prefect_aws.ecs import ECSTask
+          
+ecs = ECSTask.load("ecs/prod")
 storage = Block.load("s3/prod")
 version = sys.argv[1]
 
@@ -32,7 +34,8 @@ deployment = Deployment.build_from_flow(
     version=version,
     work_queue_name="mlops",
     storage=storage,
-    schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York"))
+    schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York")),
+    output="prefect/flows/config_output/healthcheck.yaml"
 )
 
 if __name__ == "__main__":

@@ -81,42 +81,42 @@ jobs:
         run: |
           export AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
           echo $AWS_ACCOUNT_ID
-          cat <<EOF > aws_ecs_blocks.py
+          cat <<EOF > prefect/infra/aws_ecs_blocks.py
           from prefect.filesystems import S3
           # from prefect_aws.ecs import ECSTask, AwsCredentials
 
           id_ = "${{ secrets.AWS_ACCESS_KEY_ID }}"
           key_ = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           path_ = "${{ env.S3_PATH }}"
-          # img_ = "${{ env.IMAGE_NAME }}"
+          img_ = "${{ env.IMAGE_NAME }}"
           block_ = "${{ env.BLOCK }}"
-          # cluster_ = "${{ env.ECS_CLUSTER }}"
-          # cpu_ = "${{ env.CPU }}"
-          # memory_ = "${{ env.MEMORY }}"
-          # aws_acc_id = $AWS_ACCOUNT_ID
-          # exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
-          # task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
+          cluster_ = "${{ env.ECS_CLUSTER }}"
+          cpu_ = "${{ env.CPU }}"
+          memory_ = "${{ env.MEMORY }}"
+          aws_acc_id = $AWS_ACCOUNT_ID
+          exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
+          task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
 
-          # aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
-          # aws_creds.save(block_, overwrite=True)
+          aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
+          aws_creds.save(block_, overwrite=True)
 
           s3 = S3(bucket_path=path_, aws_access_key_id=id_, aws_secret_access_key=key_)
           s3.save(block_, overwrite=True)
           
-          # ecs = ECSTask(
-          #     aws_credentials=aws_creds,
-          #     image=img_,
-          #     cpu=cpu_,
-          #     memory=memory_,
-          #     stream_output=True,
-          #     configure_cloudwatch_logs=True,
-          #     cluster=cluster_,
-          #     execution_role_arn=exec_role,
-          #     task_role_arn=task_role,
-          # )
-          # ecs.save(block_, overwrite=True)
+          ecs = ECSTask(
+              aws_credentials=aws_creds,
+              image=img_,
+              cpu=cpu_,
+              memory=memory_,
+              stream_output=True,
+              configure_cloudwatch_logs=True,
+              cluster=cluster_,
+              execution_role_arn=exec_role,
+              task_role_arn=task_role,
+          )
+          ecs.save(block_, overwrite=True)
           EOF
-          python aws_ecs_blocks.py
+          python prefect/infra/aws_ecs_blocks.py
 
   deploy:
     needs: [changes, maintenance]
@@ -158,11 +158,9 @@ jobs:
         run: |
           echo ${{ matrix.flows }}
           export PYTHONPATH=`pwd`
-          echo $PYTHONPATH
-          pwd
-          python -c "import sys; print('\n'.join(sys.path))"
+          FLOW_NAME=$(basename ${{ matrix.flows }} .py)
           python ${{ matrix.flows }} $GITHUB_SHA
-          echo "flow_manifest=$FLOW_NAME.yaml" >> $GITHUB_OUTPUT
+          echo "flow_manifest=prefect/flows/config_output/${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact
         uses: actions/upload-artifact@v3
@@ -226,15 +224,15 @@ jobs:
       - name:
         run: aws ecs update-service --cluster prefect-cluster --service prefect-ecs-service --force-new-deployment
 
-      # - name: Prefect ECS block
-      #   run: |
-      #     cat <<EOF > ecs_block.py
-      #     from prefect_aws.ecs import ECSTask
+      - name: Prefect ECS block
+        run: |
+          cat <<EOF > prefect/infra/ecs_block.py
+          from prefect_aws.ecs import ECSTask
           
-      #     block_ = "${{ env.BLOCK }}"
-      #     ecs = ECSTask.load(block_)
-      #     ecs.image = "${{ steps.build-image.outputs.image }}"
-      #     ecs.save(block_, overwrite=True)
+          block_ = "${{ env.BLOCK }}"
+          ecs = ECSTask.load(block_)
+          ecs.image = "${{ steps.build-image.outputs.image }}"
+          ecs.save(block_, overwrite=True)
           
-      #     EOF
-      #     python ecs_block.py
+          EOF
+          python prefect/infra/ecs_block.py

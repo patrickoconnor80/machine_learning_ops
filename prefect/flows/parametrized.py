@@ -29,7 +29,8 @@ deployment = Deployment.build_from_flow(
     version=version,
     work_queue_name="mlops",
     storage=storage,
-    schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York"))
+    schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York")),
+    output="prefect/flows/config_output/parametrized.yaml"
 )
 
 if __name__ == "__main__":
