@@ -9,7 +9,7 @@ from prefect.blocks.core import Block
 from prefect.orion.schemas.schedules import CronSchedule
 from prefect_aws.ecs import ECSTask
           
-ecs = ECSTask.load("ecs/prod")
+ecs = ECSTask.load("ecs-task/prod")
 storage = Block.load("s3/prod")
 version = sys.argv[1]
 
@@ -35,6 +35,7 @@ deployment = Deployment.build_from_flow(
     version=version,
     work_queue_name="mlops",
     storage=storage,
+    infrastructure=ecs,
     schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York")),
     output="prefect/flows/config_output/healthcheck.yaml"
 )
