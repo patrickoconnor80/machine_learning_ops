@@ -9,7 +9,7 @@ from prefect.blocks.core import Block
 from prefect.orion.schemas.schedules import CronSchedule
 from prefect_aws.ecs import ECSTask
           
-ecs = ECSTask.load("ecs-task/prod")
+ecs = ECSTask.load("prod")
 storage = Block.load("s3/prod")
 version = sys.argv[1]
 

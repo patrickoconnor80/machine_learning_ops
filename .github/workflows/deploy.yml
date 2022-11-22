@@ -226,7 +226,7 @@ jobs:
 
       - name: Prefect ECS block
         run: |
-          cat <<EOF > prefect/infra/ecs_block.py
+          cat <<EOF > ecs_block.py
           from prefect_aws.ecs import ECSTask
           
           block_ = "${{ env.BLOCK }}"
@@ -235,4 +235,4 @@ jobs:
           ecs.save(block_, overwrite=True)
           
           EOF
-          python prefect/infra/ecs_block.py
+          python ecs_block.py
