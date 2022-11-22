@@ -28,6 +28,7 @@ def log_platform_info():
 @flow
 def healthcheck():
     log_platform_info()
+    
 
 deployment = Deployment.build_from_flow(
     flow=healthcheck,
