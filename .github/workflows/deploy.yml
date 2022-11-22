@@ -10,11 +10,11 @@ env:
   PROJECT: mlops
   BLOCK: prod
   PREFECT_VERSION: 2.4
-  ECS_CLUSTER: prefect
+  ECS_CLUSTER: prefect-cluster
   AWS_REGION: us-east-1
-  IMAGE_NAME: hello-world
-  CPU: 512
-  MEMORY: 1024
+  IMAGE_NAME: mlopsex
+  CPU: 128
+  MEMORY: 256
   S3_PATH: prefect-orion-storage-8
 
 jobs:
@@ -159,11 +159,8 @@ jobs:
       - name: Deploy flows to S3
         id: build
         run: |
-          echo ${{ matrix.flows }}
-          export PYTHONPATH=`pwd`
-          pwd
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          python ${{ matrix.flows }} $GITHUB_SHA
+          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT -o $FLOW_NAME.yaml -ib ecs-task/$BLOCK -cron "0 0 * * *" --skip-upload
           echo "flow_manifest=${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact

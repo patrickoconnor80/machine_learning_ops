@@ -127,8 +127,6 @@ resource "aws_ecs_task_definition" "prefect" {
           image = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.image_name}:latest",
           name = "flow"
           essential = true
-          cpu = "${var.cpu}"
-          memory = "${var.memory}"
           entryPoint = ["bash", "-c"],
           command = ["prefect --version;prefect config view;prefect agent start -q mlops"]
           secrets = [

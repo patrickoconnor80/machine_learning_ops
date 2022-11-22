@@ -3,17 +3,9 @@ import os
 
 from prefect import task, flow
 from prefect import get_run_logger
-from prefect.deployments import Deployment
-from prefect.blocks.core import Block
-from prefect.orion.schemas.schedules import CronSchedule
 
 from libs.snowflake_client import SnowflakeClient
 
-
-storage = Block.load("s3/prod")
-version = ''
-if sys.argv[1:]:
-    version = sys.argv[1]
 
 @task
 def say_hi(user_name: str):
@@ -26,15 +18,5 @@ def hello(user: str = "Marvin"):
     #healthcheck()
 
 
-deployment = Deployment.build_from_flow(
-    flow=hello,
-    name="hello-deployment",
-    version=version,
-    work_queue_name="mlops",
-    storage=storage,
-    schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York")),
-    output="hello.yaml"
-)
-
 if __name__ == "__main__":
-    deployment.apply()
+    hello.()
