@@ -13,8 +13,8 @@ env:
   ECS_CLUSTER: prefect-cluster
   AWS_REGION: us-east-1
   IMAGE_NAME: mlopsex
-  CPU: 128
-  MEMORY: 256
+  CPU: 256
+  MEMORY: 512
   S3_PATH: prefect-orion-storage-8
 
 jobs:
