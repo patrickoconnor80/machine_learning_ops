@@ -28,7 +28,7 @@ def prepare_features(df, categorical, train=True):
     
     df[categorical] = df[categorical].fillna(-1).astype('int').astype('str')
     return df
-
+ 
 @task
 def train_model(df, categorical):
     logger = get_run_logger()
@@ -92,18 +92,3 @@ def main(date=None):
         date = datetime.today.strftime("%Y-%m-%d")
     with open(f'./models/dv-{date}.b', 'wb') as f_out:
         pickle.dump(dv, f_out)
-
-# main("2021-08-15")
-
-from prefect.deployments import Deployment
-from prefect.orion.schemas.schedules import CronSchedule
-from prefect.flow_runners import SubprocessFlowRunner
-
-Deployment(
-    flow=main,
-    name="model_training",
-    version=version,
-    work_queue_name="mlops",
-    storage=storage,
-    schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York"))
-)
