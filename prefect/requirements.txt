@@ -242,6 +242,8 @@ six==1.16.0
     #   kubernetes
     #   pyopenssl
     #   python-dateutil
+sklearn==0.0.post1
+    # via -r requirements.in
 sniffio==1.3.0
     # via
     #   anyio
