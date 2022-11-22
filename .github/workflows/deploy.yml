@@ -81,9 +81,9 @@ jobs:
         run: |
           export AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
           echo $AWS_ACCOUNT_ID
-          cat <<EOF > prefect/infra/aws_ecs_blocks.py
+          cat <<EOF > aws_ecs_blocks.py
           from prefect.filesystems import S3
-          # from prefect_aws.ecs import ECSTask, AwsCredentials
+          from prefect_aws.ecs import ECSTask, AwsCredentials
 
           id_ = "${{ secrets.AWS_ACCESS_KEY_ID }}"
           key_ = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
@@ -116,7 +116,7 @@ jobs:
           )
           ecs.save(block_, overwrite=True)
           EOF
-          python prefect/infra/aws_ecs_blocks.py
+          python aws_ecs_blocks.py
 
   deploy:
     needs: [changes, maintenance]
