@@ -62,6 +62,7 @@ jobs:
         run: |
           pip install prefect==$PREFECT_VERSION
           pip install -r prefect/requirements.txt
+          prefect block register -m prefect_aws.ecs
 
       - name: Prefect Cloud login
         run: |
@@ -96,6 +97,7 @@ jobs:
           aws_acc_id = $AWS_ACCOUNT_ID
           exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
           task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
+          vpc_id =  "vpc-0f832cdef894374dc"
 
           aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
           aws_creds.save(block_, overwrite=True)
@@ -113,6 +115,7 @@ jobs:
               cluster=cluster_,
               execution_role_arn=exec_role,
               task_role_arn=task_role,
+              vpc_id=vpc_id
           )
           ecs.save(block_, overwrite=True)
           EOF
