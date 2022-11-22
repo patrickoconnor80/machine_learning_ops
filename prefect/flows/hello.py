@@ -19,4 +19,4 @@ def hello(user: str = "Marvin"):
 
 
 if __name__ == "__main__":
-    hello.()
+    hello()
