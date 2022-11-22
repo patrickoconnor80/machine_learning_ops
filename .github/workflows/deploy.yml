@@ -12,7 +12,7 @@ env:
   PREFECT_VERSION: 2.4
   ECS_CLUSTER: prefect-cluster
   AWS_REGION: us-east-1
-  IMAGE_NAME: mlopsex
+  IMAGE_NAME: mlops
   CPU: 256
   MEMORY: 512
   S3_PATH: prefect-orion-storage-8
