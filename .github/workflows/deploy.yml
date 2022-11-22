@@ -158,9 +158,10 @@ jobs:
         run: |
           echo ${{ matrix.flows }}
           export PYTHONPATH=`pwd`
+          pwd
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
           python ${{ matrix.flows }} $GITHUB_SHA
-          echo "flow_manifest=prefect/flows/config_output/${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
+          echo "flow_manifest=${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact
         uses: actions/upload-artifact@v3
