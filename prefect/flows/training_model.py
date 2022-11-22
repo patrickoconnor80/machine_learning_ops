@@ -73,7 +73,7 @@ def get_paths(date):
     return train_path, val_path
 
 @flow
-def main(date=None):
+def training_model(date=None):
     train_path, val_path = get_paths(date).result()
 
     categorical = ['PUlocationID', 'DOlocationID']
