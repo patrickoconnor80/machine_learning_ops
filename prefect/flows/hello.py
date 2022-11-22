@@ -11,7 +11,9 @@ from libs.snowflake_client import SnowflakeClient
 
 
 storage = Block.load("s3/prod")
-version = sys.argv[1]
+version = ''
+if sys.argv[1:]:
+    version = sys.argv[1]
 
 @task
 def say_hi(user_name: str):

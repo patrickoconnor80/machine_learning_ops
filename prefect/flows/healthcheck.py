@@ -11,7 +11,9 @@ from prefect_aws.ecs import ECSTask
           
 ecs = ECSTask.load("prod")
 storage = Block.load("s3/prod")
-version = sys.argv[1]
+version = ''
+if sys.argv[1:]:
+    version = sys.argv[1]
 
 @task
 def log_platform_info():
