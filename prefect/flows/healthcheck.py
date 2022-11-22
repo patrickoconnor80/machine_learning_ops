@@ -36,7 +36,7 @@ deployment = Deployment.build_from_flow(
     storage=storage,
     infrastructure=ecs,
     schedule=(CronSchedule(cron="0 0 * * *", timezone="America/New_York")),
-    output="prefect/flows/config_output/healthcheck.yaml"
+    output="healthcheck.yaml"
 )
 
 if __name__ == "__main__":
