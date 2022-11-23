@@ -166,9 +166,9 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          CRON="$(python3 -c 'from hello import CRON; print(CRON)')"
-          QUEUE="$(python3 -c 'from hello import QUEUE; print(QUEUE)')"
-          INFRASTRUCUTRE_BLOCK="$(python3 -c 'from hello import INFRASTRUCUTRE_BLOCK; print(INFRASTRUCUTRE_BLOCK)')"
+          CRON="$(python3 -c 'from ${{ matrix.flows }} import CRON; print(CRON)')"
+          QUEUE="$(python3 -c 'from ${{ matrix.flows }} import QUEUE; print(QUEUE)')"
+          INFRASTRUCUTRE_BLOCK="$(python3 -c 'from ${{ matrix.flows }} import INFRASTRUCUTRE_BLOCK; print(INFRASTRUCUTRE_BLOCK)')"
           prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $QUEUE -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT -o $FLOW_NAME.yaml -ib $INFRASTRUCUTRE_BLOCK --cron $CRON
           echo "flow_manifest=${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
 
