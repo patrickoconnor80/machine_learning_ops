@@ -1,8 +1,8 @@
 import pandas as pd
 
-# from sklearn.feature_extraction import DictVectorizer
-# from sklearn.linear_model import LinearRegression
-# from sklearn.metrics import mean_squared_error
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 
 from prefect import task, flow, get_run_logger
 from datetime import datetime
