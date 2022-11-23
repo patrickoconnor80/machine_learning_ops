@@ -4,6 +4,9 @@ from prefect import task, flow
 from prefect import get_run_logger
 from typing import Any
 
+CRON = "* * * * *"
+QUEUE = "mlops"
+INFRASTRUCUTRE_BLOCK = "ecs-task/prod"
 
 @task
 def say_hi(user_name: str, question: str, answer: Any) -> None:

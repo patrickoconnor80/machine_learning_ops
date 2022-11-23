@@ -8,6 +8,10 @@ from prefect import task, flow, get_run_logger
 from datetime import datetime
 import pickle
 
+CRON = "* * * * *"
+QUEUE="mlops"
+INFRASTRUCUTRE_BLOCK="ecs-task/prod"
+
 @task
 def read_data(path):
     df = pd.read_parquet(path)

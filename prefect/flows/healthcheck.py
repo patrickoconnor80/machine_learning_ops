@@ -5,6 +5,9 @@ import prefect
 from prefect import task, flow, get_run_logger
 from prefect.orion.api.server import ORION_API_VERSION
 
+CRON = "* * * * *"
+QUEUE = "mlops"
+INFRASTRUCUTRE_BLOCK = "ecs-task/prod"
 
 @task
 def log_platform_info():

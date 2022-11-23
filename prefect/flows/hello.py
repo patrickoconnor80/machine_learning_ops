@@ -4,8 +4,11 @@ import os
 from prefect import task, flow
 from prefect import get_run_logger
 
-from libs.snowflake_client import SnowflakeClient
+#from libs.snowflake_client import SnowflakeClient
 
+CRON = "* * * * *"
+QUEUE = "mlops"
+INFRASTRUCUTRE_BLOCK = "ecs-task/prod"
 
 @task
 def say_hi(user_name: str):

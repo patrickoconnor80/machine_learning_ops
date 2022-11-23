@@ -39,6 +39,31 @@ EOF
 }
 
 resource "aws_iam_policy" "prefect_ecs_task" {
+  name        = "prefect-task-policy"
+  description = "Access to HG Insights role, S3 r7bi buckets, ECS ECR/Log actions KMS, Secrets Manager, Parameter Store"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "ECRContainerCreationAndLogging"
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "logs:CreateLogStream",
+          "logs:CreateLogGroup",
+          "logs:PutLogEvents"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "prefect_ecs_execution_task" {
   name        = "prefect-task-execution-policy"
   description = "Access to HG Insights role, S3 r7bi buckets, ECS ECR/Log actions KMS, Secrets Manager, Parameter Store"
 
@@ -75,6 +100,11 @@ resource "aws_ecs_cluster" "prefect" {
 resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = aws_iam_policy.prefect_ecs_task.arn
 }
 
 resource "aws_iam_role_policy_attachment" "task_s3" {

@@ -98,6 +98,12 @@ jobs:
           exec_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskRole"
           task_role = f"arn:aws:iam::{aws_acc_id}:role/{img_}-TaskExecutionRole"
           vpc_id =  "vpc-0f832cdef894374dc"
+          cloudwatch_logs_options = { 
+            "awslogs-group": "mlops",
+            "awslogs-region": "us-east-1",
+            "awslogs-create-group": "true",
+            "awslogs-stream-prefix": "flow"
+          }
 
           aws_creds = AwsCredentials(aws_access_key_id=id_, aws_secret_access_key=key_)
           aws_creds.save(block_, overwrite=True)
@@ -160,7 +166,10 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $PROJECT -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT -o $FLOW_NAME.yaml -ib ecs-task/$BLOCK --cron "0 0 * * *"
+          CRON="$(python3 -c 'from hello import CRON; print(CRON)')"
+          QUEUE="$(python3 -c 'from hello import QUEUE; print(QUEUE)')"
+          INFRASTRUCUTRE_BLOCK="$(python3 -c 'from hello import INFRASTRUCUTRE_BLOCK; print(INFRASTRUCUTRE_BLOCK)')"
+          prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $QUEUE -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT -o $FLOW_NAME.yaml -ib $INFRASTRUCUTRE_BLOCK --cron $CRON
           echo "flow_manifest=${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
 
       - name: Upload YAML deployment manifest as artifact
