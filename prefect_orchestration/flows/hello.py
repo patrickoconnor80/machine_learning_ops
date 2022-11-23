@@ -4,7 +4,7 @@ import os
 from prefect import task, flow
 from prefect import get_run_logger
 
-#from libs.snowflake_client import SnowflakeClient
+from libs.snowflake_client import SnowflakeClient
 
 CRON = "* * * * *"
 QUEUE = "mlops"

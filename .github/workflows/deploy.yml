@@ -166,7 +166,7 @@ jobs:
       #   id: build
       #   run: |
       #     FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-      #     python3 -c 'from prefect.flows.$FLOW_NAME import DEPLOYMENT; DEPLOYMENT.apply()'
+      #     python3 -c "from prefect_orchestration.flows.$FLOW_NAME import DEPLOYMENT; DEPLOYMENT.apply()"
       #     echo "flow_manifest=${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
 
       - name: Deploy flows to S3

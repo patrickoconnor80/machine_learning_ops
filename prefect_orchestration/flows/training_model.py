@@ -12,6 +12,7 @@ CRON = "* * * * *"
 QUEUE="mlops"
 INFRASTRUCUTRE_BLOCK="ecs-task/prod"
 
+
 @task
 def read_data(path):
     df = pd.read_parquet(path)
