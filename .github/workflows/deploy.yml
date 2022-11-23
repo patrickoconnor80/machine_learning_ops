@@ -61,7 +61,7 @@ jobs:
       - name: Python dependencies
         run: |
           pip install prefect==$PREFECT_VERSION
-          pip install -r prefect/requirements.txt
+          pip install -r prefect_orchestration/requirements.txt
           prefect block register -m prefect_aws.ecs
 
       - name: Prefect Cloud login
@@ -147,7 +147,7 @@ jobs:
       - name: Python dependencies
         run: |
           pip install prefect==$PREFECT_VERSION
-          pip install -r prefect/requirements.txt
+          pip install -r prefect_orchestration/requirements.txt
 
       - name: Prefect Cloud login
         run: |
