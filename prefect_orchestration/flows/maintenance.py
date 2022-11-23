@@ -14,7 +14,6 @@ def maintenance():
     logger.info("Network: %s. Instance: %s. Agent is healthy ✅️", node(), platform())
     logger.info("Python = %s. API: %s. Prefect = %s 🚀", python_version(), API, version)
 
-
 # from prefect.deployments import Deployment
 # from prefect.blocks.core import Block
 # from prefect.orion.schemas.schedules import CronSchedule
@@ -27,7 +26,7 @@ def maintenance():
 #     work_queue_name="mlops",
 #     storage=storage,
 #     schedule=(CronSchedule(cron="0 0 6 * *", timezone="America/New_York")),
-    
+
 # )
 
 if __name__ == "__main__":

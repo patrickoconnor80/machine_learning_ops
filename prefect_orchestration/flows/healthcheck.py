@@ -9,7 +9,6 @@ CRON = "* * * * *"
 QUEUE = "mlops"
 INFRASTRUCUTRE_BLOCK = "ecs-task/prod"
 
-
 @task
 def log_platform_info():
     logger = get_run_logger()
