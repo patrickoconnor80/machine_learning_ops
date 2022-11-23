@@ -173,10 +173,9 @@ jobs:
         id: build
         run: |
           FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          MODULE=$(echo $FLOW_NAME | tr / .)
-          CRON="$(python3 -c "from $MODULE import CRON; print(CRON)")"
-          QUEUE="$(python3 -c "from $MODULE import QUEUE; print(QUEUE)")"
-          INFRASTRUCUTRE_BLOCK="$(python3 -c "from $MODULE import INFRASTRUCUTRE_BLOCK; print(INFRASTRUCUTRE_BLOCK)")"
+          CRON="$(python3 -c "from prefect_orchestration.flows.$FLOW_NAME import CRON; print(CRON)")"
+          QUEUE="$(python3 -c "from prefect_orchestration.flows.$FLOW_NAME import QUEUE; print(QUEUE)")"
+          INFRASTRUCUTRE_BLOCK="$(python3 -c "from prefect_orchestration.flows.$FLOW_NAME import INFRASTRUCUTRE_BLOCK; print(INFRASTRUCUTRE_BLOCK)")"
           prefect deployment build ${{ matrix.flows }}:$FLOW_NAME -sb s3/$BLOCK -q $QUEUE -v $GITHUB_SHA -a -t $PROJECT -n $PROJECT -o $FLOW_NAME.yaml -ib $INFRASTRUCUTRE_BLOCK --cron $CRON
           echo "flow_manifest=${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
 
