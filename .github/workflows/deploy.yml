@@ -162,12 +162,12 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           mask-aws-account-id: 'no'
 
-      - name: Deploy flows to S3
-        id: build
-        run: |
-          FLOW_NAME=$(basename ${{ matrix.flows }} .py)
-          python3 -c 'from prefect.flows.$FLOW_NAME import DEPLOYMENT; DEPLOYMENT.apply()'
-          echo "flow_manifest=${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
+      # - name: Deploy flows to S3
+      #   id: build
+      #   run: |
+      #     FLOW_NAME=$(basename ${{ matrix.flows }} .py)
+      #     python3 -c 'from prefect.flows.$FLOW_NAME import DEPLOYMENT; DEPLOYMENT.apply()'
+      #     echo "flow_manifest=${FLOW_NAME}.yaml" >> $GITHUB_OUTPUT
 
       - name: Deploy flows to S3
         id: build
